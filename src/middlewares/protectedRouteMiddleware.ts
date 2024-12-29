@@ -12,7 +12,7 @@ const protectedRoute = (req: Request, res: Response, next: NextFunction) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET || '');
     req.user = decoded.id;
     next();
-  } catch (_error) {
+  } catch (_err) {
     return res.status(401).json({ message: 'Unauthorized' });
   }
 };
