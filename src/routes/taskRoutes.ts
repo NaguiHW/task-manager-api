@@ -357,7 +357,7 @@ router.post('/tasks', hasTitle(), createTask);
  *                   description: The error message
  *                   enum: [Unknown error, Task not found]
  */
-router.put('/tasks/:id', updateTask);
+router.put('/tasks/:id', hasTitle(), updateTask);
 
 /**
  * @swagger
