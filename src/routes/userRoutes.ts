@@ -60,7 +60,7 @@ const router = Router();
  *             schema:
  *               type: object
  *               properties:
- *                 _id:
+ *                 id:
  *                   type: string
  *                   example: 60f7b4b6b4b3f40015f6b3b3
  *                 name:
@@ -158,7 +158,7 @@ router.post(
  *             schema:
  *               type: object
  *               properties:
- *                 _id:
+ *                 id:
  *                   type: string
  *                   example: 60f7b4b6b4b3f40015f6b3b3
  *                   description: The user's ID

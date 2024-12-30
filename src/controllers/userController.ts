@@ -16,7 +16,7 @@ export const registerUser = async (req: Request, res: Response) => {
 
     await user.save();
     res.status(201).json({
-      _id: user._id,
+      id: user._id,
       name: user.name,
       email: user.email,
       token: generateToken(user._id),
@@ -45,7 +45,7 @@ export const loginUser = async (req: Request, res: Response) => {
     }
 
     res.status(200).json({
-      _id: user._id,
+      id: user._id,
       name: user.name,
       email: user.email,
       token: generateToken(user._id),
