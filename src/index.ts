@@ -19,14 +19,9 @@ const corsOptions = {
 };
 
 const app = express();
-const PORT = process.env.PORT || 8000;
 
 app.use(express.json());
 app.use(cors(corsOptions));
 app.use('/api', userRoutes);
 app.use('/api', protectedRoute, taskRoutes);
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-
-app.listen(PORT, () => {
-  console.log('Server is running on port:', PORT);
-});
