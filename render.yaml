@@ -2,7 +2,7 @@ services:
   - name: task-manager-api
     type: web
     env: node
-    region: us
+    region: us-west
     buildCommand: npm install
     startCommand: npm start
     envVars:
