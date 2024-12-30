@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+dotenv.config();
 import db from './config/db';
 import userRoutes from './routes/userRoutes';
 import taskRoutes from './routes/taskRoutes';
@@ -8,11 +9,10 @@ import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './docs/swagger';
 import cors from 'cors';
 
-dotenv.config();
 db();
 
 const corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: 'http://localhost:5173',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,

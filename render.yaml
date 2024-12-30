@@ -1,0 +1,13 @@
+services:
+  - name: task-manager-api
+    type: web
+    env: node
+    region: us
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: PORT
+        value: 3000
+    branch: develop
+    autoDeploy: true
+    plan: free
