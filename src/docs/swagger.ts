@@ -7,11 +7,6 @@ const options = {
       title: 'Task Manager API',
       version: '1.0.0',
     },
-    servers: [
-      {
-        url: `${process.env.BASE_URL}/api`,
-      },
-    ],
   },
   apis: ['./src/routes/*.ts'],
 };
