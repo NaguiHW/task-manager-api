@@ -37,12 +37,11 @@ export const getTasks = async (req: Request, res: Response) => {
     const completed = req.query.completed as string;
     const startIndex = (page - 1) * limit;
     const { userId } = req.body;
-    const tasksQuery = Task.find()
-      .where(userId)
+    const tasksQuery = Task.find({ userId: userId })
       .limit(limit)
       .skip(startIndex)
       .sort({ createdAt: -1 });
-    const totalTasksQuery = Task.countDocuments();
+    const totalTasksQuery = Task.find({ userId: userId }).countDocuments();
 
     switch (completed) {
       case 'true':
@@ -60,6 +59,17 @@ export const getTasks = async (req: Request, res: Response) => {
     const tasks = await tasksQuery;
     const totalTasks = await totalTasksQuery;
     const totalPages = Math.ceil(totalTasks / limit);
+
+    if (totalTasks === 0) {
+      res.status(200).json({
+        tasks: [],
+        page,
+        totalTasks,
+        totalPages,
+        limit,
+      });
+      return;
+    }
 
     if (page > totalPages) {
       res.status(404).json({ message: 'Page not found' });
@@ -81,9 +91,14 @@ export const getTasks = async (req: Request, res: Response) => {
 export const getTask = async (req: Request, res: Response) => {
   try {
     const { userId } = req.body;
-    const task = await Task.findById(req.params.id).where(userId);
+    const task = await Task.findById(req.params.id);
 
     if (!task) {
+      return;
+    }
+
+    if (task.userId !== userId) {
+      res.status(401).json({ message: 'Unauthorized' });
       return;
     }
 
@@ -107,9 +122,14 @@ export const updateTask = async (req: Request, res: Response) => {
   const errors = validationResult(req);
   try {
     const { title, description, completed, userId } = req.body;
-    const task = await Task.findById(req.params.id).where(userId);
+    const task = await Task.findById(req.params.id);
 
     if (!task) {
+      return;
+    }
+
+    if (task.userId !== userId) {
+      res.status(401).json({ message: 'Unauthorized' });
       return;
     }
 
@@ -137,11 +157,18 @@ export const updateTask = async (req: Request, res: Response) => {
 export const deleteTask = async (req: Request, res: Response) => {
   try {
     const { userId } = req.body;
-    const task = await Task.deleteOne({ _id: req.params.id }).where(userId);
+    const task = await Task.findById(req.params.id);
 
-    if (task.deletedCount === 0) {
+    if (!task) {
       return;
     }
+
+    if (task.userId !== userId) {
+      res.status(401).json({ message: 'Unauthorized' });
+      return;
+    }
+
+    await Task.findByIdAndDelete(req.params.id);
 
     res.status(204).json({ message: 'Task deleted' });
   } catch (error) {
